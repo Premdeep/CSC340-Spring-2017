@@ -110,46 +110,102 @@ void levelorder(bstNode* root){
 
 }
 
+bstNode* findMax(bstNode* root){
+	if(root == NULL)
+		return root;
+	while(root->right != NULL)
+		root = root->right;
+	return root;
+	}
+
+bstNode* deleteNode(bstNode* root, int val){
+
+	if(NULL == root)
+		return root;
+	if(val > root->data){
+		root->right = deleteNode(root->right, val);
+		return root;
+	}else if( val < root->data){
+		root->left = deleteNode(root->left, val);
+		return root;
+	}else{
+		// we found it ;
+		// leaf node;
+		if(root->left == NULL && root->right == NULL){
+			delete root;
+			root = NULL;
+			return root;
+		}else if( root->left == NULL){
+			bstNode* temp = root;
+			root = root->right;
+			delete temp;
+			return root;
+		}
+		else if(root->right == NULL){
+			bstNode* temp = root;
+			root = root->left;
+			delete temp;
+			return root;
+		}else{
+
+			bstNode* temp = findMax(root->left);
+			root->data = temp->data;
+			root->left = deleteNode(root->left, temp->data);
+			return root;
+		}
+	}
+
+
+}
+
 int main(){
 
 	bstNode* root;
 	root = NULL;
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 	root = insertNode(root, 6);
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 	//bstNode* insertNode(bstNode* head, int data){
 	root = insertNode(root, 3);
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 	root = insertNode(root, 4);
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 	root = insertNode(root, 1);
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 	root = insertNode(root, 5);
-	cout<<"root : "<<root<<endl;
+	//cout<<"root : "<<root<<endl;
 
-	cout<<"preorder : ";
-	preorder(root);
-	cout<<endl;
-	cout<<"inorder : ";
+	// cout<<"preorder : ";
+	// preorder(root);
+	// cout<<endl;
+	// cout<<"inorder : ";
 	inorder(root);
 	cout<<endl;
 
-	cout<<"postorder :";
-	postorder(root);
+	root = deleteNode(root, 1);
+	root = deleteNode(root, 3);
+
+	inorder(root);
 	cout<<endl;
 
-	cout<<"height : "<<height(root)<<endl;
 
-	int item = 44;
 
-	if(search(root, item))
-		cout<<item<<" found "<<endl;
-	else
-		cout<<item<<" not found"<<endl;
+// 	cout<<"postorder :";
+// 	postorder(root);
+// 	cout<<endl;
 
-cout<<"leve order :";
-levelorder(root);
-cout<<endl;
+// 	cout<<"height : "<<height(root)<<endl;
+
+// 	int item = 44;
+
+// 	if(search(root, item))
+// 		cout<<item<<" found "<<endl;
+// 	else
+// 		cout<<item<<" not found"<<endl;
+
+// cout<<"leve order :";
+// levelorder(root);
+// cout<<endl;
 
 
 	return 0;
